@@ -107,7 +107,7 @@ data class InternalAnalysisAggregateFinalizedEvent @JsonCreator constructor(@fie
 data class ResultAutoMatchedEvent @JsonCreator constructor(@field:JsonProperty("identifier") @param:JsonProperty("identifier") override val identifier: InternalAnalysisAggregateId,
                                                            @field:JsonProperty("analysisNumber") @param:JsonProperty("analysisNumber") val analysisNumber: AnalysisNumber,
                                                            @field:JsonProperty("result") @param:JsonProperty("result") val result: String,
-                                                           @field:JsonProperty("unit") @param:JsonProperty("unit") val unit: String,
+                                                           @field:JsonProperty("unit") @param:JsonProperty("unit") val unit: String?,
                                                            @field:JsonProperty("device") @param:JsonProperty("device") val device: String,
                                                            @field:JsonProperty("observationGroupId") @param:JsonProperty("observationGroupId") val observationGroupId: String,
                                                            @field:JsonProperty("user") @param:JsonProperty("user") val user: String) : AbstractInternalAnalysisEvent()
