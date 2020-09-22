@@ -1,6 +1,5 @@
 package be.cegeka.orderit.service.eventstore.api;
 
-import be.cegeka.orderit.service.eventstore.api.AnalysisNumberModule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import org.reflections.ReflectionUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +68,19 @@ public abstract class BaseEventSerializableTest<ITEM_TYPE, AGGREGATE_ID_TYPE> {
             }
         }
         assertThat(success).isTrue();
+    }
+
+    @Test
+    public void parseJsonFile() throws IOException {
+        String resource = item().getClass().getSimpleName() + ".json";
+        InputStream stream = ClassLoader.getSystemResourceAsStream(resource);
+        if (stream != null) {
+            System.out.println(String.format("Unmarshalling file from 'classpath:/%s.json", resource));
+
+            Object value = mapper.readValue(stream, item().getClass());
+
+            assertThat(value).isNotNull();
+        }
     }
 
 }
