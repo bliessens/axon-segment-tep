@@ -1,12 +1,10 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-abstract class BaseInternalAnalysisEventTest extends BaseEventSerializableTest<AbstractInternalAnalysisEvent, InternalAnalysisAggregateId> {
+abstract class BaseInternalAnalysisEventTest : BaseEventSerializableTest<AbstractInternalAnalysisEvent, InternalAnalysisAggregateId>() {
 
-    @Override
-    protected abstract AbstractInternalAnalysisEvent item();
+    abstract override fun item(): AbstractInternalAnalysisEvent
 
-    @Override
-    protected Class<InternalAnalysisAggregateId> identifierType() {
-        return InternalAnalysisAggregateId.class;
+    override fun identifierType(): Class<InternalAnalysisAggregateId> {
+        return InternalAnalysisAggregateId::class.java
     }
 }

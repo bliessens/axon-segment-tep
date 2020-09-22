@@ -1,86 +1,90 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.reflections.ReflectionUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
+import org.junit.Test
+import org.reflections.ReflectionUtils
+import java.io.IOException
+import java.lang.reflect.Field
+import java.util.function.Predicate
 
 /**
- * Parent test class for unit testing domain objects. <p/>
- * <p>
+ * Parent test class for unit testing domain objects.
+ *
+ *
+ *
+ *
  * Main purpose is to test JSON (de)serialization of objects.
  *
  * @param <ITEM_TYPE>
  * @param <AGGREGATE_ID_TYPE>
- */
-public abstract class BaseEventSerializableTest<ITEM_TYPE, AGGREGATE_ID_TYPE> {
+</AGGREGATE_ID_TYPE></ITEM_TYPE> */
+abstract class BaseEventSerializableTest<ITEM_TYPE : Any, AGGREGATE_ID_TYPE> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private val mapper = jacksonObjectMapper()
 
     @Before
-    public void setUp() throws Exception {
-        mapper.registerModule(new JavaTimeModule());
-        mapper.registerModule(new AnalysisNumberModule());
+    @Throws(Exception::class)
+    fun setUp() {
+        mapper.registerModule(JavaTimeModule())
+        mapper.registerModule(AnalysisNumberModule())
+    }
+
+    @Throws(IOException::class)
+    @Test
+    fun isSerializableWithJackson(): Unit {
+        assertSerializable(item())
+    }
+
+    protected abstract fun item(): ITEM_TYPE
+
+    protected abstract fun identifierType(): Class<AGGREGATE_ID_TYPE>
+
+    @Throws(IOException::class)
+    private fun assertSerializable(instance: Any) {
+        val actual = readValue(writeValue(instance), instance.javaClass)
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(instance)
+    }
+
+    @Throws(JsonProcessingException::class)
+    protected fun writeValue(value: Any?): String {
+        return mapper.writeValueAsString(value)
+    }
+
+    @Throws(IOException::class)
+    protected fun <T> readValue(json: String?, targetClass: Class<T>?): T {
+        return mapper.readValue(json, targetClass)
     }
 
     @Test
-    public void isSerializableWithJackson() throws IOException {
-        assertSerializable(item());
-    }
-
-    protected abstract ITEM_TYPE item();
-
-    protected abstract Class<AGGREGATE_ID_TYPE> identifierType();
-
-    private void assertSerializable(Object object) throws IOException {
-        Object actual = readValue(writeValue(object), object.getClass());
-
-        assertThat(actual).isEqualToComparingFieldByFieldRecursively(object);
-    }
-
-    protected String writeValue(Object value) throws JsonProcessingException {
-        return mapper.writeValueAsString(value);
-    }
-
-    protected <T> T readValue(String json, Class<T> targetClass) throws IOException {
-        return mapper.readValue(json, targetClass);
-    }
-
-    @Test
-    public void aggregateIdentifierOfItemIsSerializedAs_identifier() throws Exception {
-        Class itemType = item().getClass();
-
-        boolean success = false;
-        for (Field field : ReflectionUtils.getAllFields(itemType, field -> field.getAnnotationsByType(JsonProperty.class).length > 0)) {
-            if (field.getType().equals(identifierType())) {
-                final JsonProperty jsonProp = field.getAnnotation(JsonProperty.class);
-                assertThat(jsonProp.value()).isEqualTo("identifier");
-                success = true;
+    @Throws(Exception::class)
+    fun aggregateIdentifierOfItemIsSerializedAs_identifier() {
+        val itemType: Class<*> = item()::class.java
+        var success = false
+        for (field in ReflectionUtils.getAllFields(itemType, Predicate { field: Field -> field.getAnnotationsByType(JsonProperty::class.java).size > 0 })) {
+            if (field.type == identifierType()) {
+                val jsonProp = field.getAnnotation(JsonProperty::class.java)
+                assertThat(jsonProp.value).isEqualTo("identifier")
+                success = true
             }
         }
-        assertThat(success).isTrue();
+        assertThat(success).isTrue
     }
 
     @Test
-    public void parseJsonFile() throws IOException {
-        String resource = item().getClass().getSimpleName() + ".json";
-        InputStream stream = ClassLoader.getSystemResourceAsStream(resource);
-        if (stream != null) {
-            System.out.println(String.format("Unmarshalling file from 'classpath:/%s.json", resource));
+    fun parseJsonFile() {
+        val resource = item()::class.simpleName + ".json"
+        ClassLoader.getSystemResourceAsStream(resource)?.let { it ->
+            println("Unmarshalling file from 'classpath:/${resource}.json")
 
-            Object value = mapper.readValue(stream, item().getClass());
+            val value = mapper.readValue(it, item()::class.java)
 
-            assertThat(value).isNotNull();
+            assertThat(value).isNotNull
         }
     }
-
 }

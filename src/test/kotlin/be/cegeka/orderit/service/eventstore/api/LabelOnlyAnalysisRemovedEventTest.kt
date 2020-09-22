@@ -1,10 +1,11 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-public class LabelOnlyAnalysisRemovedEventTest extends BaseInternalAnalysisEventTest {
+import be.cegeka.orderit.service.eventstore.api.AnalysisNumber.Companion.from
 
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        final InternalAnalysisAggregateId aggregateIdentifier = new InternalAnalysisAggregateId("safdghjk");
-        return new LabelOnlyAnalysisRemovedEvent(aggregateIdentifier, AnalysisNumber.from(45), "user");
+class LabelOnlyAnalysisRemovedEventTest : BaseInternalAnalysisEventTest() {
+
+    override fun item(): AbstractInternalAnalysisEvent {
+        val aggregateIdentifier = InternalAnalysisAggregateId("safdghjk")
+        return LabelOnlyAnalysisRemovedEvent(aggregateIdentifier, from(45), "user")
     }
 }

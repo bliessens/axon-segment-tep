@@ -1,16 +1,10 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-import be.cegeka.orderit.service.eventstore.api.AbstractInternalAnalysisEvent;
-import be.cegeka.orderit.service.eventstore.api.InternalAnalysisAggregateFinalizedEvent;
-import be.cegeka.orderit.service.eventstore.api.InternalAnalysisAggregateId;
+import java.util.*
 
-import java.util.UUID;
+class InternalAnalysisAggregateFinalizedEventTest : BaseInternalAnalysisEventTest() {
 
-
-public class InternalAnalysisAggregateFinalizedEventTest extends BaseInternalAnalysisEventTest {
-
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        return new InternalAnalysisAggregateFinalizedEvent(new InternalAnalysisAggregateId(UUID.randomUUID().toString()));
+    override fun item(): AbstractInternalAnalysisEvent {
+        return InternalAnalysisAggregateFinalizedEvent(InternalAnalysisAggregateId(UUID.randomUUID().toString()))
     }
 }

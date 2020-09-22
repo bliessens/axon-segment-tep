@@ -1,15 +1,11 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-import be.cegeka.orderit.service.eventstore.api.AbstractInternalAnalysisEvent;
-import be.cegeka.orderit.service.eventstore.api.AnalysisNumber;
-import be.cegeka.orderit.service.eventstore.api.InternalAnalysisAggregateId;
-import be.cegeka.orderit.service.eventstore.api.ResultChangedEvent;
+import be.cegeka.orderit.service.eventstore.api.AnalysisNumber.Companion.from
 
-public class ResultChangedEventTest extends BaseInternalAnalysisEventTest {
+class ResultChangedEventTest : BaseInternalAnalysisEventTest() {
 
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        final InternalAnalysisAggregateId aggregateIdentifier = new InternalAnalysisAggregateId("safdghjk");
-        return new ResultChangedEvent(aggregateIdentifier, AnalysisNumber.from(45), "23%", "usertje");
+    override fun item(): AbstractInternalAnalysisEvent {
+        val aggregateIdentifier = InternalAnalysisAggregateId("safdghjk")
+        return ResultChangedEvent(aggregateIdentifier, from(45), "23%", "usertje")
     }
 }

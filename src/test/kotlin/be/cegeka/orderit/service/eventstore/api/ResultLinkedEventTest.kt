@@ -1,14 +1,10 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-import be.cegeka.orderit.service.eventstore.api.AbstractInternalAnalysisEvent;
-import be.cegeka.orderit.service.eventstore.api.AnalysisNumber;
-import be.cegeka.orderit.service.eventstore.api.InternalAnalysisAggregateId;
-import be.cegeka.orderit.service.eventstore.api.ResultLinkedEvent;
+import be.cegeka.orderit.service.eventstore.api.AnalysisNumber.Companion.from
 
-public class ResultLinkedEventTest extends BaseInternalAnalysisEventTest {
+class ResultLinkedEventTest : BaseInternalAnalysisEventTest() {
 
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        return new ResultLinkedEvent(new InternalAnalysisAggregateId("oidentifoir"), AnalysisNumber.from(123), "77", "unit", "device", "observationGroupId", "user");
+    override fun item(): AbstractInternalAnalysisEvent {
+        return ResultLinkedEvent(InternalAnalysisAggregateId("oidentifoir"), from(123), "77", "unit", "device", "observationGroupId", "user")
     }
 }

@@ -1,14 +1,10 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-import be.cegeka.orderit.service.eventstore.api.AbstractInternalAnalysisEvent;
-import be.cegeka.orderit.service.eventstore.api.AnalysisNumber;
-import be.cegeka.orderit.service.eventstore.api.InternalAnalysisAggregateId;
-import be.cegeka.orderit.service.eventstore.api.ResultUnlinkedEvent;
+import be.cegeka.orderit.service.eventstore.api.AnalysisNumber.Companion.from
 
-public class ResultUnlinkedEventTest extends BaseInternalAnalysisEventTest {
+class ResultUnlinkedEventTest : BaseInternalAnalysisEventTest() {
 
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        return new ResultUnlinkedEvent(new InternalAnalysisAggregateId("ajdentifaajer"), AnalysisNumber.from(987), "observationGroupId", "user");
+    override fun item(): AbstractInternalAnalysisEvent {
+        return ResultUnlinkedEvent(InternalAnalysisAggregateId("ajdentifaajer"), from(987), "observationGroupId", "user")
     }
 }

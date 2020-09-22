@@ -1,10 +1,11 @@
-package be.cegeka.orderit.service.eventstore.api;
+package be.cegeka.orderit.service.eventstore.api
 
-public class AnalysisRemovedFromBatteryEventTest extends BaseInternalAnalysisEventTest {
-    
-    @Override
-    protected AbstractInternalAnalysisEvent item() {
-        final InternalAnalysisAggregateId aggregateIdentifier = new InternalAnalysisAggregateId("powemfvnk");
-        return new AnalysisRemovedFromBatteryEvent(aggregateIdentifier, AnalysisNumber.from(123), AnalysisNumber.from(567));
+import be.cegeka.orderit.service.eventstore.api.AnalysisNumber.Companion.from
+
+class AnalysisRemovedFromBatteryEventTest : BaseInternalAnalysisEventTest() {
+
+    override fun item(): AbstractInternalAnalysisEvent {
+        val aggregateIdentifier = InternalAnalysisAggregateId("powemfvnk")
+        return AnalysisRemovedFromBatteryEvent(aggregateIdentifier, from(123), from(567))
     }
 }
