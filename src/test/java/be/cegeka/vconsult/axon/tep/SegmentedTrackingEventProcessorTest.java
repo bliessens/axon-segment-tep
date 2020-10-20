@@ -1,9 +1,9 @@
 package be.cegeka.vconsult.axon.tep;
 
 import org.axonframework.common.jpa.EntityManagerProvider;
+import org.axonframework.eventhandling.GapAwareTrackingToken;
+import org.axonframework.eventhandling.TrackingToken;
 import org.axonframework.eventhandling.tokenstore.jpa.JpaTokenStore;
-import org.axonframework.eventsourcing.eventstore.GapAwareTrackingToken;
-import org.axonframework.eventsourcing.eventstore.TrackingToken;
 import org.axonframework.serialization.xml.XStreamSerializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +55,8 @@ public class SegmentedTrackingEventProcessorTest {
 
     @Test
     public void testJpaTokenStoreIsEmpty() {
+        tokenStore.initializeSegment(GapAwareTrackingToken.newInstance(0, emptyList()), "abc", 0);
+
         tokenStore.storeToken(GapAwareTrackingToken.newInstance(0, emptyList()), "abc", 0);
 
         TrackingToken abc = tokenStore.fetchToken("abc", 0);
@@ -94,7 +96,10 @@ public class SegmentedTrackingEventProcessorTest {
 
         @Bean
         public JpaTokenStore jpaTokenStore(EntityManagerProvider provider) {
-            return new JpaTokenStore(provider, new XStreamSerializer());
+            return JpaTokenStore.builder()
+                    .entityManagerProvider(provider)
+                    .serializer(XStreamSerializer.builder().build())
+                    .build();
         }
 
         private Properties jpaProperties() {

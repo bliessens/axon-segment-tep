@@ -10,8 +10,8 @@ apply plugin: "kotlin"
 apply plugin: "idea"
 
 ext {
-    axon = '3.1.3'
-    spring = '4.3.28.RELEASE'
+    axon = '4.4.3'
+    spring = '5.2.9.RELEASE'
 //    hibernate = '5.4.20.Final'
     hibernate = '4.3.11.Final'
 }
@@ -36,7 +36,8 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.2"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2"
 
-    implementation "org.axonframework:axon-core:$axon"
+//    implementation "org.axonframework:axon-messaging:$axon"
+//    implementation "org.axonframework:axon-modelling:$axon"
     implementation "org.axonframework:axon-spring:$axon"
 
     implementation "org.springframework:spring-beans:$spring"

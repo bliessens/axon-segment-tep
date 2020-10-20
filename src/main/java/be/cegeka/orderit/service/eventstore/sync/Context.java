@@ -2,10 +2,10 @@ package be.cegeka.orderit.service.eventstore.sync;
 
 import be.cegeka.orderit.service.eventstore.api.*;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventhandling.saga.EndSaga;
-import org.axonframework.eventhandling.saga.SagaEventHandler;
-import org.axonframework.eventhandling.saga.SagaLifecycle;
-import org.axonframework.eventhandling.saga.StartSaga;
+import org.axonframework.modelling.saga.EndSaga;
+import org.axonframework.modelling.saga.SagaEventHandler;
+import org.axonframework.modelling.saga.SagaLifecycle;
+import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.serialization.Revision;
 import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;

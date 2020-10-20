@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.axonframework.serialization.Revision
 import java.io.Serializable
+import java.util.*
 
-data class OrderModelAggregateId @JsonCreator constructor(@field:JsonProperty("uuid") val uuid: String) : Serializable
+data class OrderModelAggregateId @JsonCreator constructor(@field:JsonProperty("uuid") val uuid: String) : Serializable {
+
+    constructor(uuid: UUID) : this(uuid.toString())
+
+}
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
 sealed class AbstractOrderModelEvent : Serializable {
